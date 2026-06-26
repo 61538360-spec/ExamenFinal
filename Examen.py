@@ -2,6 +2,7 @@
 import sys, matplotlib.pyplot as plt, networkx as nx
 from matplotlib.patches import FancyArrowPatch
 
+
 # === Definición del DFA (Modificado para la Lavadora) ===
 states = {"A", "B", "C", "D", "E", "F", "G"}
 alphabet = {"a", "b", "c", "d"}
