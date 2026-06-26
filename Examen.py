@@ -28,7 +28,6 @@ def run(s):
 G = nx.MultiDiGraph(); G.add_nodes_from(states)
 for (q,a),p in delta.items(): G.add_edge(q,p,key=a,label=a)
 pos = nx.spring_layout(G, seed=7)
-
 # === Dibujo por paso ===
 def _mid(p1,p2,o=0.10):
     (x1,y1),(x2,y2)=p1,p2; mx,my=(x1+x2)/2,(y1+y2)/2; dx,dy=x2-x1,y2-y1; nx_,ny_=-dy,dx; L=(nx_**2+ny_**2)**0.5 or 1
