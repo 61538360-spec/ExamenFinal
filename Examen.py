@@ -2,29 +2,31 @@
 import sys, matplotlib.pyplot as plt, networkx as nx
 from matplotlib.patches import FancyArrowPatch
 
-# === Definición del DFA ===
-states = {"A","B","C","D","E","F","G","T"}
-alphabet = {"0","1","2","5"}
+# === Definición del DFA (Modificado para la Lavadora) ===
+states = {"A", "B", "C", "D", "E", "F", "G"}
+alphabet = {"a", "b", "c", "d"}
 
 delta = {
-    ("A","0"):"A", ("A","1"):"B", ("A","2"):"C", ("A","5"):"F",
+    # Transiciones principales
+    ("A", "a"): "B", 
+    ("B", "a"): "E", 
+    ("C", "a"): "E", 
+    ("D", "a"): "E", 
+    ("E", "a"): "F", 
+    ("F", "a"): "G", 
+    
+    # Transiciones de cambio de moneda
+    ("B", "b"): "C", 
+    ("C", "c"): "B", 
+    ("D", "b"): "C", 
+    ("D", "c"): "B", 
 
-    ("B","1"):"D", ("B","2"):"C", ("B","5"):"F",
-    ("C","1"):"E", ("C","2"):"B", ("C","5"):"F",
-
-    ("D","1"):"G", ("D","2"):"F", ("D","5"):"F",
-    ("E","1"):"G", ("E","2"):"F", ("E","5"):"F",
-
-    ("F","0"):"F", ("F","1"):"F", ("F","2"):"F", ("F","5"):"F",
-    ("G","1"):"G", ("G","2"):"F", ("G","5"):"F",
-
-    # trampas
-    ("B","0"):"T", ("C","0"):"T", ("D","0"):"T", ("E","0"):"T",
-    ("G","0"):"T",
-    ("T","0"):"T", ("T","1"):"T", ("T","2"):"T", ("T","5"):"T",
+    # Bucles solicitados
+    ("E", "d"): "E", # Bucle en Seleccionar
+    ("G", "a"): "G"  # Bucle en Finalizar
 }
 
-q0, F = "A", {"F","G"}
+q0, F = "A", {"G"}
 
 # === Simulación ===
 def run(s):
@@ -45,7 +47,7 @@ def _mid(p1,p2,o=0.10):
 
 def draw_step(current, idx, sym=None):
     plt.clf(); nodes=list(G.nodes())
-    nx.draw_networkx_edges(G, pos, connectionstyle='arc3, rad=0.2')
+    nx.draw_networkx_nodes(G, pos, node_size=600, node_color='lightblue')
     nx.draw_networkx_labels(G,pos)
     seen={}
     for u,v,k,d in G.edges(keys=True,data=True):
@@ -59,7 +61,8 @@ def draw_step(current, idx, sym=None):
 
 # === core/main ===
 if __name__=='__main__':
-    s = sys.argv[1] if len(sys.argv)>1 else input("Cadena (0/1/2/3/4/5): ").strip()
+    # NOTA: Cambié el texto del input para que coincida con tu nuevo alfabeto (a, b, c, d)
+    s = sys.argv[1] if len(sys.argv)>1 else input("Cadena (a/b/c/d): ").strip()
     try:
         steps, ok = run(s); print("ACEPTA" if ok else "RECHAZA", f"(estado final: {steps[-1]})")
         plt.ion(); draw_step(steps[0],0)
