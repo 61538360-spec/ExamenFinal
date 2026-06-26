@@ -29,7 +29,7 @@ delta = {
 
 q0, F = "A", {"G"}
 
-# === Simulación ===
+
 def run(s):
     q, steps = q0, [q0]
     for i,ch in enumerate(s):
