@@ -3,30 +3,28 @@ import sys, matplotlib.pyplot as plt, networkx as nx
 from matplotlib.patches import FancyArrowPatch
 
 # === Definición del DFA ===
-states = {"A", "B", "C", "D", "E", "F", "G"}
+states = {"A","B","C","D","E","F","G","T"}
+alphabet = {"0","1","2","5"}
 
-alphabet = {"0", "1"}
-
-# Tabla de transición
 delta = {
-    ("A","0"): "A",
-    ("A","1"): "B",
-    ("B","0"): "C",
-    ("B","1"): "D",
-    ("C","0"): "B",
-    ("C","1"): "E",
-    ("D","0"): "E",
-    ("D","1"): "F",
-    ("E","0"): "F",
-    ("E","1"): "G",
-    ("F","0"): "F",
-    ("F","1"): "G",
-    ("G","0"): "G",
-    ("G","1"): "G"
+    ("A","0"):"A", ("A","1"):"B", ("A","2"):"C", ("A","5"):"F",
+
+    ("B","1"):"D", ("B","2"):"C", ("B","5"):"F",
+    ("C","1"):"E", ("C","2"):"B", ("C","5"):"F",
+
+    ("D","1"):"G", ("D","2"):"F", ("D","5"):"F",
+    ("E","1"):"G", ("E","2"):"F", ("E","5"):"F",
+
+    ("F","0"):"F", ("F","1"):"F", ("F","2"):"F", ("F","5"):"F",
+    ("G","1"):"G", ("G","2"):"F", ("G","5"):"F",
+
+    # trampas
+    ("B","0"):"T", ("C","0"):"T", ("D","0"):"T", ("E","0"):"T",
+    ("G","0"):"T",
+    ("T","0"):"T", ("T","1"):"T", ("T","2"):"T", ("T","5"):"T",
 }
 
-q0 = "A"
-F = {"G"}
+q0, F = "A", {"F","G"}
 
 # === Simulación ===
 def run(s):
@@ -61,7 +59,7 @@ def draw_step(current, idx, sym=None):
 
 # === core/main ===
 if __name__=='__main__':
-    s = sys.argv[1] if len(sys.argv)>1 else input("Cadena (0/1): ").strip()
+    s = sys.argv[1] if len(sys.argv)>1 else input("Cadena (0/1/2/3/4/5): ").strip()
     try:
         steps, ok = run(s); print("ACEPTA" if ok else "RECHAZA", f"(estado final: {steps[-1]})")
         plt.ion(); draw_step(steps[0],0)
