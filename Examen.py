@@ -1,6 +1,6 @@
 # dfa_cli_compacto.py — versión reducida
-import sys, matplotlib.pyplot as plt, networkx as nx
-from matplotlib.patches import FancyArrowPatch
+import sys, matplotlib.pyplot as plt, networkx as nx # pyright: ignore[reportMissingModuleSource]
+import matplotlib.patches # pyright: ignore[reportMissingModuleSource]
 
 
 # === Definición del DFA (Modificado para la Lavadora) ===
@@ -53,7 +53,7 @@ def draw_step(current, idx, sym=None):
     seen={}
     for u,v,k,d in G.edges(keys=True,data=True):
         if u==v:
-            x,y=pos[u]; plt.gca().add_patch(FancyArrowPatch((x,y),(x+1e-4,y+1e-4),connectionstyle="arc3,rad=0.45",arrowstyle='-|>',mutation_scale=18))
+            x,y=pos[u]; plt.gca().add_patch(matplotlib.patches.FancyArrowPatch((x,y),(x+1e-4,y+1e-4),connectionstyle="arc3,rad=0.45",arrowstyle='-|>',mutation_scale=18))
             plt.text(x,y+0.18,d['label'],fontsize=11,ha='center'); continue
         i=seen.get((u,v),0); seen[(u,v)]=i+1; rad=0.25 if i%2==0 else -0.25
         nx.draw_networkx_edges(G,pos,edgelist=[(u,v)],connectionstyle=f"arc3,rad={rad}",arrows=True,arrowstyle='-|>',arrowsize=20)
