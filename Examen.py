@@ -37,7 +37,7 @@ def run(s):
 # === Grafo y layout ===
 G = nx.MultiDiGraph(); G.add_nodes_from(states)
 for (q,a),p in delta.items(): G.add_edge(q,p,key=a,label=a)
-pos = nx.spring_layout(G, seed=7)
+pos = nx.circular_layout(G)
 # === Dibujo por paso ===
 def _mid(p1,p2,o=0.10):
     (x1,y1),(x2,y2)=p1,p2; mx,my=(x1+x2)/2,(y1+y2)/2; dx,dy=x2-x1,y2-y1; nx_,ny_=-dy,dx; L=(nx_**2+ny_**2)**0.5 or 1
@@ -45,7 +45,7 @@ def _mid(p1,p2,o=0.10):
 
 def draw_step(current, idx, sym=None):
     plt.clf(); nodes=list(G.nodes())
-    nx.draw_networkx_nodes(G,pos,nodelist=nodes,node_size=[900 if n==current else 600 for n in nodes],linewidths=[3 if n in F else 1 for n in nodes],edgecolors="black")
+    nx.draw_networkx_edges(G, pos, connectionstyle='arc3, rad=0.2')
     nx.draw_networkx_labels(G,pos)
     seen={}
     for u,v,k,d in G.edges(keys=True,data=True):
